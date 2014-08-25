@@ -1,9 +1,12 @@
 ---
 dependencies:
-  - { role: apache }
+  - { role: apache,
+      basic_auth_name: "demo",
+      basic_auth_pass: "demopass"
+    }
   - { role: mysql,
-      mysql_db_name: "{{ wp_db_name }}",
-      mysql_db_user: "{{ wp_db_user }}",
-      mysql_db_password: "{{ wp_db_password }}"
+      mysql_db_name: "wordpress",
+      mysql_db_user: "wpuser",
+      mysql_db_password: "wppass1234"
     }
   - { role: php }

@@ -1,4 +1,5 @@
-- stat: path={{ ansible_env.HOME }}/wp-latest.tar.gz
+- name: register wp-latest.tar.gz path
+  stat: path={{ ansible_env.HOME }}/wp-latest.tar.gz
   register: p
 - name: get WordPress
   get_url: url={{ wordpress_url }} dest={{ ansible_env.HOME }}/wp-latest.tar.gz
