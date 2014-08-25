@@ -52,3 +52,7 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# Ansible-GCE credencial
+credencials/*.pem
+credencials/secrets.py
+vars/gce_auth.yml

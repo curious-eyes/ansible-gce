@@ -1,0 +1,47 @@
+---
+# compute-video-demo-ansible
+- name: Destroy all demo resources
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - vars/gce_auth.yml
+    - vars/common.yml
+  tasks:
+    - name: Destroy the instances
+      local_action:
+        module: gce
+        instance_names: "{{ names }}"
+        zone: "{{ zone }}"
+        project_id: "{{ project_id }}"
+        pem_file: "{{ pem_file }}"
+        service_account_email: "{{ service_account_email }}"
+        state: absent
+    - name: Destroy the firewall rule
+      local_action:
+        module: gce_net
+        fwname: all-http
+        project_id: "{{ project_id }}"
+        pem_file: "{{ pem_file }}"
+        service_account_email: "{{ service_account_email }}"
+        state: absent
+    - name: Destroy the load-balancer
+      local_action:
+        module: gce_lb
+        name: lb
+        region: "{{ region }}"
+        project_id: "{{ project_id }}"
+        pem_file: "{{ pem_file }}"
+        service_account_email: "{{ service_account_email }}"
+        state: absent
+    - name: Make sure the persistent disks are destroyed
+      local_action:
+        module: gce_pd
+        name: "{{ item.name }}"
+        zone: "{{ item.zone }}"
+        project_id: "{{ project_id }}"
+        pem_file: "{{ pem_file }}"
+        service_account_email: "{{ service_account_email }}"
+        state: absent
+      with_items:
+        - { name: "www2", zone: "asia-east1-a" }
+        - { name: "www3", zone: "asia-east1-a" }

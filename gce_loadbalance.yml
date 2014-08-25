@@ -1,0 +1,85 @@
+- name: Create new GCE instances
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - "vars/target_lb.yml"
+    - "vars/gce_auth.yml"
+  tasks:
+    - name: Launch instances
+      local_action:
+        module: gce
+        instance_names: "{{ names }}"
+        machine_type: "{{ type }}"
+        image: "{{ image }}"
+        zone: "{{ zone }}"
+        service_account_email: "{{ service_account_email }}"
+        pem_file: "{{ pem_file }}"
+        project_id: "{{ project_id }}"
+        tags: webserver
+      register: gce
+    - name: Wait for SSH to be available
+      local_action: wait_for host={{ item.public_ip }} port=22
+                    delay=20 timeout=30 state=started
+      with_items: gce.instance_data
+    - name: Get hostname and add host
+      local_action: add_host hostname={{ item.public_ip }}
+                    groupname=new_instances
+      with_items: gce.instance_data
+
+- name: Install apache, set a custom index.html
+  hosts: new_instances
+  sudo: yes
+  tasks:
+    - name: Update apt
+      apt: update_cache=yes
+    - name: Install apache
+      apt: pkg=apache2 state=present
+    - name: remove default index.html
+      command: removes=/var/www/index.html rm /var/www/index.html
+    - name: custom index.html
+      copy: dest=/var/www/index.html
+            content='Hi, I am {{ ansible_hostname }}'
+    - name: set file stats on index.html
+      file: path=/var/www/index.html owner=root group=root mode=0644
+    - name: custom healthstatus
+      copy: dest=/var/www/isup.html content='ALIVE'
+    - name: set file stats on healthstatus
+      file: path=/var/www/isup.html owner=root group=root mode=0644
+    - name: start apache
+      service: name=apache2 state=started
+
+- name: set up networking
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - "vars/gce_auth.yml"
+  tasks:
+    - name: Allow HTTP traffic
+      local_action:
+        module: gce_net
+        fwname: all-http
+        name: default
+        allowed: tcp:80
+        service_account_email: "{{ service_account_email }}"
+        pem_file: "{{ pem_file }}"
+        project_id: "{{ project_id }}"
+
+- name: Set up the load-balancer
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - "vars/target_lb.yml"
+    - "vars/gce_auth.yml"
+  tasks:
+    - name: Create LoadBalancer
+      local_action:
+        module: gce_lb
+        name: lb
+        httphealthcheck_name: hc
+        httphealthcheck_port: 80
+        httphealthcheck_path: "/isup.html"
+        region: "{{ region }}"
+        members: "{{ members }}"
+        service_account_email: "{{ service_account_email }}"
+        pem_file: "{{ pem_file }}"
+        project_id: "{{ project_id }}"
