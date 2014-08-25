@@ -1,4 +1,1 @@
 wordpress_url: http://ja.wordpress.org/latest-ja.tar.gz
-wp_db_name: wordpress
-wp_db_user: wpuser
-wp_db_password: wppass1234
