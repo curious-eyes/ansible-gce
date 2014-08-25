@@ -1,0 +1,9 @@
+---
+dependencies:
+  - { role: apache }
+  - { role: mysql,
+      mysql_db_name: "{{ wp_db_name }}",
+      mysql_db_user: "{{ wp_db_user }}",
+      mysql_db_password: "{{ wp_db_password }}"
+    }
+  - { role: php }

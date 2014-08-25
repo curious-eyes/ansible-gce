@@ -1,0 +1,3 @@
+service_account_email: ......@developer.gserviceaccount.com
+pem_file: /path/to/google_compute_engine.pem
+project_id: your-project-name

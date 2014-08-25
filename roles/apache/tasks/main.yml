@@ -1,0 +1,8 @@
+- name: Install apache
+  apt: pkg=apache2 state=present update_cache=yes
+- name: custom healthstatus
+  copy: dest=/var/www/isup.html content='ALIVE'
+- name: set file stats on healthstatus
+  file: path=/var/www/isup.html owner=root group=root mode=0644
+- name: start apache
+  service: name=apache2 state=started

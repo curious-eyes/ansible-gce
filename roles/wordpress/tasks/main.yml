@@ -1,0 +1,22 @@
+- stat: path={{ ansible_env.HOME }}/wp-latest.tar.gz
+  register: p
+- name: get WordPress
+  get_url: url={{ wordpress_url }} dest={{ ansible_env.HOME }}/wp-latest.tar.gz
+  when: p.stat.exists == false
+- name: Wait for download
+  wait_for: path={{ ansible_env.HOME }}/wp-latest.tar.gz timeout=30
+  register: wordpress
+- name: unpack WordPress
+  command: tar xzf {{ item }} -C {{ ansible_env.HOME }}/
+  with_items: wordpress.path
+- stat: path=/var/www/wp-admin
+  register: p
+- name: remove default index.html
+  command: removes=/var/www/index.html rm /var/www/index.html
+- name: move wordpress to public
+  shell: mv {{ ansible_env.HOME }}/wordpress/* /var/www/
+  when: p.stat.exists == false
+- name: Copy Wordpress config file
+  template: src=wp-config.php dest=/var/www/
+- name: file permission
+  file: path=/var/www owner=www-data group=www-data recurse=yes

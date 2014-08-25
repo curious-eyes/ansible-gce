@@ -1,0 +1,12 @@
+- name: Install MySQL
+  apt: pkg=mysql-server state=present
+- name: Install Mysql package
+  apt: pkg={{ item }} state=present
+  with_items:
+   - python-mysqldb
+- name: Create Database
+  mysql_db: name={{ mysql_db_name }} state=present
+  when: mysql_db_name is defined
+- name: Create Wordpress database user
+  mysql_user: name={{ mysql_db_user }} password={{ mysql_db_password }} priv={{ mysql_db_name }}.*:ALL host='localhost' state=present
+  when: mysql_db_user is defined and mysql_db_password is defined and mysql_db_name is defined

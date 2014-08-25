@@ -1,0 +1,4 @@
+names: www-wp
+type: f1-micro
+image: debian-7
+zone: asia-east1-a
