@@ -5,7 +5,7 @@ Ansible Playbook for starting Google Compute Engine instance.
 ### Spec:
 - OS X 10.9.4
 - Python 2.7.5
-- Ansible 1.6.6
+- Ansible 1.7.1
 
 ### Reference:
 - [Ansible - Google Cloud Platform Guide](http://docs.ansible.com/guide_gce.html)
