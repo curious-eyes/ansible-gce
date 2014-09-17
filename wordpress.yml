@@ -1,0 +1,40 @@
+- name: Create new GCE instances
+  hosts: localhost
+  gather_facts: no
+  roles:
+    - { role: gce,
+        tags: "webservers",
+        names: "www-wp",
+        type: "f1-micro",
+        image: "debian-7",
+        zone: "asia-east1-a"
+      }
+
+- name: Set Time Zone and Locale
+  hosts: new_instances
+  sudo: yes
+  roles:
+    - timezone_locale
+    - git
+
+- name: Setting Wordpress and Friends
+  hosts: new_instances
+  sudo: yes
+  roles:
+    - wordpress
+
+- name: Create a firewall rule to allow HTTP
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - "roles/gce/vars/main.yml"
+  tasks:
+    - name: Allow HTTP
+      local_action:
+        module: gce_net
+        fwname: all-http
+        name: default
+        allowed: tcp:80
+        service_account_email: "{{ service_account_email }}"
+        pem_file: "{{ pem_file }}"
+        project_id: "{{ project_id }}"

@@ -4,8 +4,8 @@
   hosts: localhost
   gather_facts: no
   vars_files:
-    - vars/gce_auth.yml
-    - vars/common.yml
+    - "roles/gce/vars/main.yml"
+    - "vars/target_lb.yml"
   tasks:
     - name: Destroy the instances
       local_action:

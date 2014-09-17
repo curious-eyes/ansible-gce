@@ -37,16 +37,16 @@ Ansible Playbook for starting Google Compute Engine instance.
    ```
 
 #### Step-6.
-- Rename `/vars/gce_auth-sample.yml` to `/vars/gce_auth.yml`
+- Rename `/roles/gce/vars/main-sample.yml` to `/roles/gce/vars/main.yml`
 - Set each properties like `secrets.py`.
 
 ### How to play:
 #### Part-1. Create two instances and Load-balancing
 ```bash
-$ gce_ansible.sh gce_loadbalance.yml
+$ gce_ansible.sh lb-sample.yml
 ```
 
 #### Part-2. Create an instance and Setting WordPress
 ```bash
-$ gce_ansible.sh gce_wordpress.yml
+$ gce_ansible.sh wordpress.yml
 ```

@@ -55,5 +55,5 @@ docs/_build/
 # Ansible-GCE credencial
 credencials/*.pem
 credencials/secrets.py
-vars/gce_auth.yml
+roles/gce/vars/main.yml
 inventory/gce.ini
