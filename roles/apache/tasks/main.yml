@@ -8,17 +8,25 @@
   apt: pkg={{ item }} state=present
   with_items:
    - python-passlib
-  when: basic_auth_pass is defined and basic_auth_name is defined
+  when:
+    - basic_auth_pass is defined
+    - basic_auth_name is defined
 - name: Setting Basic Authentication
   htpasswd: path=/var/www/.htpasswd name={{ basic_auth_name }} password={{ basic_auth_pass }} owner=root group=www-data mode=0640
-  when: basic_auth_pass is defined and basic_auth_name is defined
+  when:
+    - basic_auth_pass is defined
+    - basic_auth_name is defined
 - name: Remove apache2 conf
   command: removes=/etc/apache2/sites-available/default rm /etc/apache2/sites-available/default
-  when: basic_auth_pass is defined and basic_auth_name is defined
+  when:
+    - basic_auth_pass is defined
+    - basic_auth_name is defined
 - name: Copy apache2 conf
   template: src=default.conf dest=/etc/apache2/sites-available/default
   notify:
     - restart apache
-  when: basic_auth_pass is defined and basic_auth_name is defined
+  when:
+    - basic_auth_pass is defined
+    - basic_auth_name is defined
 - name: start apache
   service: name=apache2 state=started
