@@ -1,2 +1,7 @@
+names: www2,www3
+type: f1-micro
+image: debian-7
+zone: asia-east1-a
+tags: webservers
 region: asia-east1
 members: ["asia-east1-a/www2", "asia-east1-a/www3"]

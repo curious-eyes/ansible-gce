@@ -1,14 +1,10 @@
 - name: Create new GCE instances
   hosts: localhost
   gather_facts: no
+  vars_files:
+    - "vars/target_wp.yml"
   roles:
-    - { role: gce,
-        tags: "webservers",
-        names: "www-wp",
-        type: "f1-micro",
-        image: "debian-7",
-        zone: "asia-east1-a"
-      }
+    - gce
 
 - name: Set Time Zone and Locale
   hosts: new_instances

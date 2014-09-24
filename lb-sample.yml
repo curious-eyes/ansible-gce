@@ -1,14 +1,10 @@
 - name: Create new GCE instances
   hosts: localhost
   gather_facts: no
+  vars_files:
+    - "vars/target_lb.yml"
   roles:
-    - { role: gce,
-        tags: "webservers",
-        names: "www2,www3",
-        type: "f1-micro",
-        image: "debian-7",
-        zone: "asia-east1-a"
-      }
+    - gce
 
 - name: Install apache, set a custom index.html
   hosts: new_instances
