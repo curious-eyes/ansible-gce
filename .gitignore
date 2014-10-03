@@ -53,7 +53,7 @@ coverage.xml
 docs/_build/
 
 # Ansible-GCE credencial
-credencials/*.pem
-credencials/secrets.py
+credentials/*.pem
+credentials/secrets.py
 roles/gce/vars/main.yml
 inventory/gce.ini
