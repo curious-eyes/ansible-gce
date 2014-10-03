@@ -1,0 +1,5 @@
+names: www-golang
+type: f1-micro
+image: debian-7
+zone: asia-east1-a
+tags: webservers

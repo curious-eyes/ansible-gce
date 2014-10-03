@@ -1,0 +1,37 @@
+- name: Create new GCE instances
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - "vars/target_go.yml"
+  roles:
+    - gce
+
+- name: Set Time Zone and Locale
+  hosts: new_instances
+  sudo: yes
+  roles:
+    - timezone_locale
+    - git
+    - mercurial
+
+- name: Setting golang
+  hosts: new_instances
+  sudo: yes
+  roles:
+    - golang
+
+- name: Create a firewall rule to allow HTTP
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - "roles/gce/vars/main.yml"
+  tasks:
+    - name: Allow HTTP
+      local_action:
+        module: gce_net
+        fwname: all-http
+        name: default
+        allowed: tcp:80
+        service_account_email: "{{ service_account_email }}"
+        pem_file: "{{ pem_file }}"
+        project_id: "{{ project_id }}"

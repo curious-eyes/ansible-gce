@@ -9,6 +9,7 @@ Ansible Playbook for starting Google Compute Engine instance.
 
 ### Reference:
 - [Ansible - Google Cloud Platform Guide](http://docs.ansible.com/guide_gce.html)
+- [AnsibleでGCEインスタンスを管理する](http://qiita.com/curious-eyes/items/c7feb3edbeb7c7c640e6) - [Qiita](http://qiita.com/curious-eyes)
 
 ### Ready to play (Setting GCE module):
 #### Step-1.
