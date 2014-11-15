@@ -17,15 +17,15 @@ Ansible Playbook for starting Google Compute Engine instance.
 
 #### Step-2.
 - Get `cacert.pem` file from http://curl.haxx.se/docs/caextract.html
-- Save to `/credencials/cacert.pem`
+- Save to `/credentials/cacert.pem`
 
 #### Step-3.
 - Create a new client ID and download the generated private key.
 - (See more: http://docs.ansible.com/guide_gce.html#credentials)
-- Save this file to `/credencials/pkey.pem`
+- Save this file to `/credentials/pkey.pem`
 
 #### Step-4.
-- Rename `/credencials/secrets-sample.py` to `/credencials/secrets.py`.
+- Rename `/credentials/secrets-sample.py` to `/credentials/secrets.py`.
 - Edit this file.
 - (See more: http://docs.ansible.com/guide_gce.html#calling-modules-with-secrets-py)
 
