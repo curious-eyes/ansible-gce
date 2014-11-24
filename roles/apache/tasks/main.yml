@@ -16,6 +16,10 @@
   when:
     - basic_auth_pass is defined
     - basic_auth_name is defined
+- name: Enabled mod-rewrite
+  file: src=../mods-available/{{ item }}.load dest=/etc/apache2/mods-enabled/{{ item }}.load owner=root group=root state=link force=yes
+  with_items:
+    - rewrite
 - name: Remove apache2 conf
   command: removes=/etc/apache2/sites-available/default rm /etc/apache2/sites-available/default
   when:
