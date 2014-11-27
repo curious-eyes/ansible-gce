@@ -14,10 +14,43 @@
   register: p
 - name: remove default index.html
   command: removes=/var/www/index.html rm /var/www/index.html
+- stat: path=/git/repo.git
+  register: repo
+- file: path=/git/repo.git state=directory recurse=yes
+  when: repo.stat.exists == false
+- name: init master git repository
+  shell: git init --bare --shared=group chdir=/git/repo.git
+  when: repo.stat.exists == false
+- name: Copy git hook
+  template: src=githook-post-receive dest=/git/repo.git/hooks/post-receive mode=0775
+  when: repo.stat.exists == false
+- name: init git repository
+  shell: git init chdir=/var/www
+  when: repo.stat.exists == false
+- name: clone origin repository
+  shell: git remote add origin /git/repo.git chdir=/var/www
+  when: repo.stat.exists == false
+- name: Copy Wordpress .gitignore file
+  template: src=_gitignore dest=/var/www/.gitignore
+  when: repo.stat.exists == false
 - name: move wordpress to public
   shell: mv {{ ansible_env.HOME }}/wordpress/* /var/www/
   when: p.stat.exists == false
 - name: Copy Wordpress config file
   template: src=wp-config.php dest=/var/www/
+- name: remove sample config file
+  file: path=/var/www/wp-config-sample.php state=absent
 - name: file permission
   file: path=/var/www owner=www-data group=www-data recurse=yes
+- name: git add .gitignore
+  shell: git add .gitignore chdir=/var/www
+  when: repo.stat.exists == false
+- name: git add all
+  shell: git add . chdir=/var/www
+  when: repo.stat.exists == false
+- name: initial commit
+  shell: git commit -m "initial commit" chdir=/var/www
+  when: repo.stat.exists == false
+- name: push repository
+  shell: git push origin master chdir=/var/www
+  when: repo.stat.exists == false

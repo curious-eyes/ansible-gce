@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+cd /var/www
+sudo git reset --hard
+sudo git --git-dir=.git pull origin master
+sudo chown -R www-data:www-data .
