@@ -13,6 +13,7 @@
     - timezone_locale
     - git
     - mercurial
+    - bazaar
 
 - name: Setting golang
   hosts: new_instances

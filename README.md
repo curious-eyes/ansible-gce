@@ -16,30 +16,8 @@ Ansible Playbook for starting Google Compute Engine instance.
 `sudo pip install apache-libcloud`
 
 #### Step-2.
-- Get `cacert.pem` file from http://curl.haxx.se/docs/caextract.html
-- Save to `/credentials/cacert.pem`
-
-#### Step-3.
-- Create a new client ID and download the generated private key.
-- (See more: http://docs.ansible.com/guide_gce.html#credentials)
-- Save this file to `/credentials/pkey.pem`
-
-#### Step-4.
-- Rename `/credentials/secrets-sample.py` to `/credentials/secrets.py`.
-- Edit this file.
-- (See more: http://docs.ansible.com/guide_gce.html#calling-modules-with-secrets-py)
-
-#### Step-5.
-- Rename `/inventory/gce-sample.ini` to `/inventory/gce.ini`
-- Set in the path to `secrets.py` like following.
-
-   ```
-   libcloud_secrets = /absolute/path/to/secrets.py
-   ```
-
-#### Step-6.
-- Rename `/roles/gce/vars/main-sample.yml` to `/roles/gce/vars/main.yml`
-- Set each properties like `secrets.py`.
+- You can create new credential from the [console](https://console.developers.google.com/) by going to the "APIs and Auth" section and choosing to create a new client ID for a service account.
+- Once you’ve created a new client ID and downloaded the generated private key, you'll save pkcs12 format file to `/credentials/~filename~.p12`
 
 ### How to play:
 #### Part-1. Create two instances and Load-balancing
