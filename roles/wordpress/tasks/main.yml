@@ -8,7 +8,8 @@
   wait_for: path={{ ansible_env.HOME }}/wp-latest.tar.gz timeout=30
   register: wordpress
 - name: unpack WordPress
-  command: tar xzf {{ item }} -C {{ ansible_env.HOME }}/
+  unarchive: src={{ item }} dest={{ ansible_env.HOME }}/ copy=no
+  # command: tar xzf {{ item }} -C {{ ansible_env.HOME }}/
   with_items: wordpress.path
 - stat: path=/var/www/wp-admin
   register: p

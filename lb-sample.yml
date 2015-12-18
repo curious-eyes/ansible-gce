@@ -8,7 +8,7 @@
 
 - name: Install apache, set a custom index.html
   hosts: new_instances
-  sudo: yes
+  become: yes
   tasks:
     - name: Update apt
       apt: update_cache=yes

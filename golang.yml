@@ -8,7 +8,7 @@
 
 - name: Set Time Zone and Locale
   hosts: new_instances
-  sudo: yes
+  become: yes
   roles:
     - timezone_locale
     - git
@@ -17,7 +17,7 @@
 
 - name: Setting golang
   hosts: new_instances
-  sudo: yes
+  become: yes
   roles:
     - golang
 

@@ -1,5 +1,6 @@
 names: www-golang
 type: f1-micro
-image: debian-7
+image: debian-8
 zone: us-central1-a
 tags: webservers
+preemptible: false

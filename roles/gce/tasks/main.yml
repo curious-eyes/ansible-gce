@@ -9,6 +9,7 @@
     pem_file: "{{ pem_file }}"
     service_account_email: "{{ service_account_email }}"
     tags: "{{ tags }}"
+    # preemptible: "{{ preemptible }}"
   register: gce
 - name: Wait for SSH to be available
   local_action: wait_for host={{ item.public_ip }} port=22
